@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JEV//GHOST</title>
+
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:#000;
+  color:#c0c0c0;
+  font-family:"Times New Roman",Times,serif;
+  background-image:
+    radial-gradient(#101010 1px,transparent 1px),
+    radial-gradient(#080808 1px,transparent 1px);
+  background-position:0 0,8px 8px;
+  background-size:16px 16px;
+}
+a{color:#00f;text-decoration:underline}
+a:visited{color:#800080}
+main{
+  width:760px;
+  max-width:calc(100% - 12px);
+  margin:10px auto 40px;
+  padding:0;
+}
+header{
+  display:block;
+  text-align:center;
+  border:0;
+  padding:0 0 6px;
+}
+header:before{
+  content:"WELCOME TO MY PARANORMAL HOMEPAGE";
+  display:block;
+  color:#00ff00;
+  font:bold 14px "Courier New",monospace;
+  letter-spacing:2px;
+  margin-bottom:4px;
+}
+header:after{
+  content:"*** PAGE STILL UNDER CONSTRUCTION ***";
+  position:static;
+  display:block;
+  color:#ff0;
+  font:bold 12px "Courier New",monospace;
+  letter-spacing:0;
+  margin-top:5px;
+}
+h1{
+  margin:0;
+  font:bold 42px "Times New Roman",serif;
+  color:#ff0000;
+  text-shadow:2px 2px #0000ff;
+  line-height:1;
+}
+.sub{
+  color:#00ffff;
+  font:12px "Courier New",monospace;
+  text-transform:none;
+  letter-spacing:0;
+}
+#status{
+  display:inline-block;
+  margin-top:4px;
+  color:#fff;
+  background:#800000;
+  border:2px outset #c0c0c0;
+  padding:2px 6px;
+  font:bold 11px "MS Sans Serif",Arial,sans-serif;
+}
+.stage{padding-top:4px}
+.stage:before{
+  content:"This page is dedicated to documenting unexplained photographic phenomena. Please excuse the mess while I finish the scanner software.";
+  display:block;
+  width:92%;
+  margin:8px auto 10px;
+  padding:6px;
+  color:#fff;
+  background:#000080;
+  border:3px ridge #c0c0c0;
+  text-align:left;
+  font:13px Arial,sans-serif;
+}
+.view{
+  position:relative;
+  width:640px;
+  max-width:96%;
+  aspect-ratio:4/3;
+  margin:0 auto;
+  background:#111;
+  border:5px ridge #c0c0c0;
+  overflow:hidden;
+  filter:none;
+}
+video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  filter:contrast(1.08) saturate(.55) brightness(.74);
+}
+canvas{display:none}
+.view:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:4;
+  pointer-events:none;
+  background:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px);
+}
+.view:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:5;
+  pointer-events:none;
+  box-shadow:inset 0 0 70px 20px rgba(0,0,0,.7);
+}
+.rec{
+  position:absolute;
+  z-index:8;
+  left:8px;
+  top:8px;
+  color:#f00;
+  background:#000;
+  border:1px solid #f00;
+  padding:2px 4px;
+  font:bold 11px "Courier New",monospace;
+}
+.rec i{
+  display:inline-block;
+  width:7px;
+  height:7px;
+  background:#f00;
+  border-radius:50%;
+  margin-right:5px;
+  animation:blink 1s steps(1) infinite;
+}
+@keyframes blink{50%{opacity:0}}
+.timestamp{
+  position:absolute;
+  z-index:8;
+  right:8px;
+  top:8px;
+  color:#00ff00;
+  background:#000;
+  padding:2px 4px;
+  border:1px solid #0f0;
+  font:11px "Courier New",monospace;
+}
+.signal-loss{
+  position:absolute;
+  z-index:7;
+  left:0;right:0;height:12%;
+  top:-20%;
+  background:linear-gradient(0deg,transparent,rgba(255,255,255,.1),transparent);
+  pointer-events:none;
+}
+.view.glitch .signal-loss{animation:dropout .15s linear 2}
+@keyframes dropout{0%{top:5%}50%{top:65%}100%{top:20%}}
+.box{
+  position:absolute;
+  z-index:9;
+  display:none;
+  pointer-events:none;
+  border:2px dashed #ff0000;
+  box-shadow:none;
+}
+.box-label{
+  position:absolute;
+  left:-2px;
+  top:-20px;
+  background:#ff0;
+  color:#000;
+  padding:1px 3px;
+  font:bold 10px "Courier New",monospace;
+}
+.ghost{
+  position:absolute;
+  inset:4%;
+  pointer-events:none;
+  opacity:0;
+  filter:blur(1px) contrast(1.15);
+}
+.box.manifest .ghost{opacity:.62;animation:ghostflicker 2.5s steps(1) infinite}
+@keyframes ghostflicker{
+  0%,9%,14%,46%,53%,100%{opacity:.62}
+  10%,13%,47%,52%{opacity:.12}
+  72%{opacity:.8}
+}
+.ghost-head{
+  position:absolute;left:34%;top:4%;width:32%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(230,230,220,.68),rgba(190,190,175,.25) 55%,transparent 72%);
+}
+.ghost-body{
+  position:absolute;left:18%;right:18%;top:25%;bottom:2%;
+  clip-path:polygon(35% 0,65% 0,78% 18%,90% 60%,72% 100%,55% 75%,45% 100%,30% 76%,14% 100%,8% 58%,22% 18%);
+  background:linear-gradient(90deg,transparent,rgba(225,225,210,.16),rgba(235,235,220,.44),rgba(225,225,210,.14),transparent);
+}
+.ghost-face{
+  position:absolute;left:42%;top:14%;width:16%;height:8%;
+}
+.ghost-face:before,.ghost-face:after{
+  content:"";position:absolute;top:0;width:22%;height:100%;border-radius:50%;background:#111a;
+}
+.ghost-face:before{left:8%}.ghost-face:after{right:8%}
+.hud{
+  position:absolute;
+  left:6px;right:6px;bottom:6px;
+  z-index:8;
+  display:flex;
+  justify-content:space-between;
+  gap:6px;
+  font:10px "Courier New",monospace;
+}
+.badge{
+  background:#000;
+  border:1px solid #0f0;
+  color:#0f0;
+  padding:2px 4px;
+}
+.controls{
+  width:640px;
+  max-width:96%;
+  margin:6px auto 0;
+  padding:5px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  justify-content:center;
+  background:#c0c0c0;
+  border:3px outset #fff;
+}
+button{
+  border-radius:0;
+  border:2px outset #fff;
+  background:#c0c0c0;
+  color:#000;
+  font:bold 12px "MS Sans Serif",Arial,sans-serif;
+  padding:3px 8px;
+  cursor:pointer;
+}
+button.alt{background:#c0c0c0;color:#000}
+button:active{border-style:inset}
+button:disabled{color:#777;opacity:1;cursor:not-allowed}
+.manifest-toggle{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  color:#000;
+  font:11px "MS Sans Serif",Arial,sans-serif;
+}
+.manifest-toggle input{accent-color:auto}
+#threshold{
+  width:300px!important;
+  max-width:80%;
+  margin:2px auto 8px!important;
+  display:block;
+}
+.stage>.sub[style]{
+  display:block;
+  width:640px;
+  max-width:96%;
+  margin:8px auto 0;
+  text-align:center;
+  color:#ff0!important;
+  font:bold 11px "Courier New",monospace!important;
+}
+.error{
+  width:640px;
+  max-width:96%;
+  margin:4px auto;
+  padding:5px;
+  color:#fff;
+  background:#800000;
+  border:2px inset #c0c0c0;
+  font:12px Arial,sans-serif;
+}
+.tape-meta{
+  width:640px;
+  max-width:96%;
+  margin:10px auto 0;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  background:#c0c0c0;
+  border:3px ridge #fff;
+}
+.tape-meta>div{
+  background:#000;
+  border:1px solid #808080;
+  padding:4px;
+  text-align:center;
+}
+.tape-meta b{
+  display:block;
+  color:#0f0;
+  font:11px "Courier New",monospace;
+}
+.tape-meta span{
+  color:#c0c0c0;
+  font:9px Arial,sans-serif;
+  text-transform:uppercase;
+}
+.readout{
+  width:640px;
+  max-width:96%;
+  margin:8px auto 0;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border:3px ridge #c0c0c0;
+  background:#111;
+}
+.panel{padding:7px}
+.panel+.panel{padding-left:7px;border-left:2px groove #c0c0c0}
+.value{
+  color:#ff0;
+  font:bold 20px "Courier New",monospace;
+  margin-top:2px;
+}
+.raw{
+  white-space:pre-wrap;
+  word-break:break-word;
+  color:#0f0;
+  background:#000;
+  border:1px inset #808080;
+  padding:4px;
+  font:10px "Courier New",monospace;
+  margin-top:5px;
+  max-height:120px;
+  overflow:auto;
+}
+.stage:after{
+  content:"";
+  display:block;
+  width:88px;
+  height:31px;
+  margin:12px auto 4px;
+  border:1px solid #666;
+  background:
+    linear-gradient(#999,#555);
+  box-shadow:
+    100px 0 0 #000,
+    100px 0 0 1px #666;
+}
+.webring{
+  width:640px;
+  max-width:96%;
+  margin:12px auto 0;
+  border:2px dashed #808080;
+  padding:6px;
+  text-align:center;
+  color:#fff;
+  font:12px "Times New Roman",serif;
+}
+.webring .warn{
+  color:#ff0;
+  font:bold 14px "Comic Sans MS","Comic Sans",cursive;
+}
+.counter{
+  display:inline-block;
+  background:#000;
+  border:2px inset #c0c0c0;
+  color:#0f0;
+  padding:2px 5px;
+  font:bold 12px "Courier New",monospace;
+  letter-spacing:2px;
+}
+.blink{animation:blink 1s steps(1) infinite}
+.marquee{
+  overflow:hidden;
+  white-space:nowrap;
+  border-top:1px solid #00f;
+  border-bottom:1px solid #00f;
+  color:#0ff;
+  margin:8px auto;
+  width:640px;
+  max-width:96%;
+  font:12px "Courier New",monospace;
+}
+.marquee span{
+  display:inline-block;
+  padding-left:100%;
+  animation:scroll 13s linear infinite;
+}
+@keyframes scroll{to{transform:translateX(-100%)}}
+.footer90{
+  text-align:center;
+  color:#808080;
+  font:11px "Times New Roman",serif;
+  margin-top:10px;
+}
+.footer90 b{color:#ff0}
+@media(max-width:700px){
+  main{max-width:calc(100% - 8px)}
+  h1{font-size:30px}
+  .readout{grid-template-columns:1fr}
+  .panel+.panel{border-left:0;border-top:2px groove #c0c0c0}
+  .tape-meta{grid-template-columns:1fr}
+}
+</style>
+
+</head>
+
+<body>
+<main>
+  <header>
+    <h1>JEV//GHOST</h1>
+    <div class="sub">Jonathan's Totally Scientific Ghost Detection Homepage!!!</div>
+    <div class="sub" id="status">CAMERA OFFLINE</div>
+  </header>
+
+  <div class="marquee"><span>*** NEW!!! JEV 1.14 IMAGE SCANNER ONLINE *** REPORT ALL APPARITIONS TO THE WEBMASTER *** LAST UPDATED 10/27/96 ***</span></div>
+
+  <section class="stage">
+    <div class="view" id="view">
+      <video id="video" autoplay muted playsinline></video>
+      <div class="rec"><i></i>REC</div>
+      <div class="timestamp" id="timestamp">--:--:--:--</div>
+      <div class="signal-loss"></div>
+      <div class="box" id="box">
+        <div class="box-label">GHOST???</div>
+        <div class="ghost" id="ghost">
+          <div class="ghost-head"></div>
+          <div class="ghost-face"></div>
+          <div class="ghost-body"></div>
+        </div>
+      </div>
+      <div class="hud">
+        <span class="badge">ASKING: WHERE IS THE GHOST?</span>
+        <span class="badge" id="frame">FRAME --</span>
+      </div>
+    </div>
+    <canvas id="capture" width="640" height="480"></canvas>
+
+    <div class="controls">
+      <button id="start">START WEBCAM</button>
+      <button id="scan" class="alt" disabled>SCAN FOR GHOSTS</button>
+      <button id="auto" class="alt" disabled>AUTO-SCAN: OFF</button>
+      <label class="manifest-toggle"><input id="manifestToggle" type="checkbox" checked> show apparition graphic</label>
+    </div>
+
+    <div class="sub" style="padding-bottom:10px">SKEPTICISM LEVEL / BOX CONFIDENCE: <b id="thresholdLabel">0.70</b></div>
+    <input id="threshold" type="range" min="0.50" max="0.95" step="0.05" value="0.70">
+    <div class="error" id="error"></div>
+
+    <div class="tape-meta">
+      <div><span>Camera</span><b>LOCAL WEBCAM #1</b></div>
+      <div><span>Scanner</span><b>JEV-BOX.EXE</b></div>
+      <div><span>Result</span><b id="classification">UNRESOLVED</b></div>
+    </div>
+
+    <div class="readout">
+      <div class="panel">
+        <div class="sub">SCAN TIME</div>
+        <div class="value" id="latency">--</div>
+      </div>
+      <div class="panel">
+        <div class="sub">GHOST COORDINATES</div>
+        <div class="value" id="coords">--</div>
+        <div class="sub" style="margin-top:6px">JEV CERTAINTY: <b id="confidence">--</b></div>
+        <div class="raw" id="raw"></div>
+      </div>
+    </div>
+
+    <div class="webring">
+      <div class="warn blink">!!! PARDON OUR ECTOPLASM !!!</div>
+      <p>This page is still under construction. Some links may be dead. Some visitors may also be dead.</p>
+      <p>
+        <a href="#">[ Previous Site ]</a> |
+        <a href="#">[ Area 51 Paranormal WebRing ]</a> |
+        <a href="#">[ Next Site ]</a>
+      </p>
+      <p>Visitors since 10/31/1996: <span class="counter" id="counter">00001337</span></p>
+      <p><small>Best viewed at 800x600 with Netscape Navigator 3.0 and the lights OFF.</small></p>
+    </div>
+
+    <div class="footer90">
+      <p><b>UNDER CONSTRUCTION</b> // missing: EVP archive, guestbook, midi file, ghost.gif</p>
+      <p>© 1996-1999 JEV//GHOST Paranormal Research Page · webmaster@area51.invalid</p>
+    </div>
+  </section>
+</main>
+<audio id="xfilesAudio" loop preload="auto">
+  <source src="./xfiles.mp3" type="audio/mpeg">
+</audio>
+<script>
+(()=>{
+  const $=s=>document.querySelector(s);
+  const video=$("#video"),canvas=$("#capture"),ctx=canvas.getContext("2d");
+  const start=$("#start"),scan=$("#scan"),auto=$("#auto"),box=$("#box"),status=$("#status"),view=$("#view");
+  const manifestToggle=$("#manifestToggle"),timestampEl=$("#timestamp"),classification=$("#classification");
+  const error=$("#error"),latency=$("#latency"),coords=$("#coords"),raw=$("#raw"),frame=$("#frame");
+  const confidenceEl=$("#confidence"),threshold=$("#threshold"),thresholdLabel=$("#thresholdLabel");
+  let stream=null,running=false,autoOn=false,timer=null,n=0;
+  threshold.addEventListener("input",()=>thresholdLabel.textContent=Number(threshold.value).toFixed(2));
+  setInterval(()=>{
+    const d=new Date();
+    const ff=String(Math.floor(d.getMilliseconds()/40)).padStart(2,"0");
+    timestampEl.textContent=d.toLocaleTimeString("en-US",{hour12:false})+":"+ff;
+  },80);
+
+  function waitReady(ms=5000){
+    return new Promise((resolve,reject)=>{
+      if(video.readyState>=2&&video.videoWidth)return resolve();
+      const done=()=>{cleanup();resolve()}, fail=()=>{cleanup();reject(new Error("No camera frames became available."))};
+      const cleanup=()=>{clearTimeout(to);video.removeEventListener("canplay",done);video.removeEventListener("loadedmetadata",done)};
+      const to=setTimeout(fail,ms);
+      video.addEventListener("canplay",done);video.addEventListener("loadedmetadata",done);
+    });
+  }
+  const xfilesAudio = document.querySelector("#xfilesAudio");
+  async function openCamera(){
+    error.style.display="none";start.disabled=true;start.textContent="LOADING WEBCAM...";
+    try{
+      xfilesAudio.volume = 0.22;
+      await xfilesAudio.play();
+      stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});
+      video.srcObject=stream;try{await video.play()}catch{}
+      await waitReady();
+      status.textContent="WEBCAM ONLINE";start.textContent="WEBCAM ACTIVE";
+      scan.disabled=false;auto.disabled=false;
+    }catch(e){
+      start.disabled=false;start.textContent="RETRY WEBCAM";status.textContent="WEBCAM ERROR";
+      error.textContent=e.name+": "+e.message;error.style.display="block";
+    }
+  }
+  function grab(){
+    canvas.width=640;canvas.height=480;
+    ctx.drawImage(video,0,0,640,480);
+    return canvas.toDataURL("image/jpeg",.82);
+  }
+
+  function normalizeForDisplay(b){
+    if(!b)return null;
+    let {x1,y1,x2,y2}=b;
+    const max=Math.max(Math.abs(x1),Math.abs(y1),Math.abs(x2),Math.abs(y2));
+
+    // Support normalized 0..1, percentage-ish 0..100, or 0..1000-ish coordinates.
+    let scale=1;
+    if(max<=1.5) scale=1;
+    else if(max<=100.5) scale=100;
+    else scale=1000;
+
+    x1/=scale;y1/=scale;x2/=scale;y2/=scale;
+    x1=Math.max(0,Math.min(1,x1));y1=Math.max(0,Math.min(1,y1));
+    x2=Math.max(0,Math.min(1,x2));y2=Math.max(0,Math.min(1,y2));
+
+    if(x2<x1)[x1,x2]=[x2,x1];
+    if(y2<y1)[y1,y2]=[y2,y1];
+    return {x1,y1,x2,y2};
+  }
+
+  function drawBox(b,confidence){
+    const minConfidence=Number(threshold.value);
+    const n=normalizeForDisplay(b);
+    const c=Number(confidence);
+    confidenceEl.textContent=Number.isFinite(c)?c.toFixed(2):"N/A";
+
+    if(!n){
+      box.style.display="none";
+      box.classList.remove("manifest");
+      coords.textContent="NO GHOST DETECTED";
+      classification.textContent="NOTHING THERE";
+      return;
+    }
+
+    // If Jev supplies confidence, require it to clear the threshold.
+    // If confidence is absent, default to not drawing the box rather than hallucinating certainty.
+    if(!Number.isFinite(c) || c < minConfidence){
+      box.style.display="none";
+      box.classList.remove("manifest");
+      coords.textContent=Number.isFinite(c)?"LOW CONFIDENCE":"NO CONFIDENCE";
+      classification.textContent="INCONCLUSIVE";
+      return;
+    }
+    const w=Math.max(.01,n.x2-n.x1),h=Math.max(.01,n.y2-n.y1);
+    box.style.left=(n.x1*100)+"%";
+    box.style.top=(n.y1*100)+"%";
+    box.style.width=(w*100)+"%";
+    box.style.height=(h*100)+"%";
+    box.style.display="block";
+    box.classList.toggle("manifest",manifestToggle.checked);
+    classification.textContent="POSSIBLE GHOST";
+    coords.textContent=`${Math.round(n.x1*100)},${Math.round(n.y1*100)} → ${Math.round(n.x2*100)},${Math.round(n.y2*100)}`;
+  }
+
+  async function ask(){
+    if(running)return;
+    running=true;scan.disabled=true;status.textContent="SCANNING FOR APPARITIONS...";error.style.display="none";
+    const startTime=performance.now();
+    try{
+      const image=grab();n++;frame.textContent="FRAME "+String(n).padStart(2,"0");
+      const r=await fetch("/api/ghost",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({frame:image})});
+      const j=await r.json();
+      if(!r.ok)throw new Error(j.error||"request failed");
+      latency.textContent=(performance.now()-startTime).toFixed(1)+" ms";
+      raw.textContent=JSON.stringify(j.raw,null,2);
+      drawBox(j.box,j.confidence);
+      if(box.style.display==="block" && Math.random()<.55){
+        view.classList.remove("glitch"); void view.offsetWidth; view.classList.add("glitch");
+        setTimeout(()=>view.classList.remove("glitch"),500);
+      }
+      const c=Number(j.confidence);
+      const detected=Number.isFinite(c) && c>=Number(threshold.value) && !!j.box;
+      status.textContent=detected ? "POSSIBLE APPARITION FOUND!!!" : "NO GHOSTS FOUND";
+    }catch(e){
+      latency.textContent=(performance.now()-startTime).toFixed(1)+" ms";
+      status.textContent="JEV ERROR";error.textContent=e.message;error.style.display="block";box.style.display="none";
+    }finally{
+      running=false;scan.disabled=false;
+    }
+  }
+  function toggleAuto(){
+    autoOn=!autoOn;auto.textContent=autoOn?"AUTO-SCAN: ON":"AUTO-SCAN: OFF";
+    if(autoOn){ask();timer=setInterval(()=>{if(!running)ask()},2500)}
+    else{clearInterval(timer);timer=null}
+  }
+
+  const counter=document.querySelector("#counter");
+  if(counter){
+    const base=1337 + Math.floor(Math.random()*37);
+    counter.textContent=String(base).padStart(8,"0");
+  }
+  manifestToggle.addEventListener("change",()=>{
+    if(box.style.display==="block") box.classList.toggle("manifest",manifestToggle.checked);
+  });
+  start.addEventListener("click",openCamera);
+  scan.addEventListener("click",ask);
+  auto.addEventListener("click",toggleAuto);
+})();
+</script>
+</body>
+</html>
